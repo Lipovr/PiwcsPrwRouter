@@ -1,0 +1,5 @@
+build # build artifacts
+
+# Eclipse IDE project files
+.project
+.cproject
