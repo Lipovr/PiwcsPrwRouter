@@ -1,0 +1,3 @@
+[submodule "lib/piwcsprwmodel"]
+	path = lib/piwcsprwmodel
+	url = https://gitea.windcorp.ru/OLEGSHA/PiwcsPrwModel.git
