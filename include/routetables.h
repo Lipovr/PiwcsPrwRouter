@@ -1,7 +1,7 @@
 #ifndef INCLUDE_ROUTETABLES_H_
 #define INCLUDE_ROUTETABLES_H_
 
-#include<map>
+#include<unordered_map>
 #include<iostream>
 
 #include "util.h"
@@ -18,7 +18,7 @@ struct TableNode{
 	/**
 	 * <Origin Id, {exit, distance}>
 	 */
-	std::unordered_map<Identifier, RouteTableItem> table;
+	std::unordered_map<Identifier, RouteTableItem> origins;
 	TableNodeType type;
 	Identifier dadress{};
 	Identifier dname{};
@@ -30,7 +30,7 @@ public:
 	/*
 	 * <Destination Id, TableNode>
 	 */
-	std::unordered_map<Identifier, TableNode>;
+	std::unordered_map<Identifier, TableNode> destinations;
 
 	/*
 	 * Output routing data to std::ostream in .csv format
