@@ -1,5 +1,5 @@
-build # build artifacts
-notes # design notes
+build/ # build artifacts
+notes/ # design notes
 
 # Eclipse IDE project files
 .project
