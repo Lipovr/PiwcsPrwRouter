@@ -34,10 +34,12 @@ class RouteNode{
 	std::vector<RouteTableItem> m_table;
 	NodeStatus m_visitstatus;
 	bool m_isdestination;
+	bool m_requiresrouting;
 
   public:
 
-	RouteNode(const Identifier &id);
+	RouteNode(const Identifier &id, bool isdestination,
+			bool requiresrouting, std::vector<RouteNeighbor> neighbors);
 
 	const Identifier &id() const { return m_id; }
 
@@ -56,6 +58,10 @@ class RouteNode{
 	bool insertTableRecord(Index destination, Index exit, Length distance);
 
 	void addNeighbor(Index index, Length distance);
+
+	bool requiresRouting() { return m_requiresrouting; }
+
+	bool isDestination() { return m_isdestination; }
 
 
 };

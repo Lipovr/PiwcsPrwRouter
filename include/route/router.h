@@ -43,7 +43,7 @@ class AlgWorkspace{
 	 *
 	 * @return index of newly inserted node
 	 */
-	Index d_addNode(const Identifier &id);
+	Index d_addNode(const Identifier &id, bool isdestination, bool requiresrouting);
 
 	/*
 	 * Adds new unidirectional section to workspace
