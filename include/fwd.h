@@ -8,7 +8,7 @@ namespace piwcs::prw::router{
 	class RouteTables;
 	class AlgWorkspace;
 	class RouteNode;
-	class HeapElement;
+	class HeapItem;
 	class RouteDistHeap;
 
 }
