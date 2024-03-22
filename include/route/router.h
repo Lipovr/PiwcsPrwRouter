@@ -9,8 +9,8 @@
 #include "common.h"
 #include "util.h"
 #include "routetables.h"
-#include "distheap.h"
-#include "node.h"
+#include "route/distheap.h"
+#include "route/node.h"
 
 
 namespace piwcs::prw::router{
