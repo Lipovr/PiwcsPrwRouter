@@ -20,6 +20,8 @@ namespace piwcs::prw::router{
 struct RouteNeighbor{
 	Index node_i;
 	Length distance;
+
+	bool operator==(const RouteNeighbor& rhs) const = default;
 };
 
 class RouteNode{
