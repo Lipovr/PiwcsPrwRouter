@@ -2,15 +2,10 @@
 #define INCLUDE_ROUTE_NODE_H_
 #include <vector>
 
-#
+#include "common.h"
 #include "util.h"
 
 namespace piwcs::prw::router{
-
-enum class NodeStatus {
-		NOT_VISITED,
-		VISITED,
-	};
 
 /**
  * Structure with information on neighboring node
@@ -32,7 +27,6 @@ class RouteNode{
 	Identifier m_id;
 	std::vector<RouteNeighbor> m_neighbors;
 	std::vector<RouteTableItem> m_table;
-	NodeStatus m_visitstatus;
 	bool m_isdestination;
 	bool m_requiresrouting;
 
@@ -43,9 +37,6 @@ class RouteNode{
 
 	const Identifier &id() const { return m_id; }
 
-	NodeStatus visitStatus() const { return m_visitstatus; }
-
-	void markVisited() { m_visitstatus = NodeStatus::VISITED; }
 	/*
 	 * Reserve memory for node's routing table to hold
 	 * all possible destinations (all other nodes in graph)

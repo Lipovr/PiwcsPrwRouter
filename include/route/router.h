@@ -50,10 +50,16 @@ class AlgWorkspace{
 	 */
 	void d_addSection(Index from, Index to, Length distance);
 #endif // NDEBUG
+public:
+	enum class NodeStatus {
+			NOT_VISITED,
+			VISITED,
+		};
 
-  INSPECTABLE:
+INSPECTABLE:
 	std::vector<RouteNode> m_nodes;
 	std::vector<bool> m_nodeinheap;
+	std::vector<NodeStatus> m_nodevisited;
 	DistHeap m_heap;
 
 	//bool m_routed;
