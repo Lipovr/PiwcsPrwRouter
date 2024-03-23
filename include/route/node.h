@@ -27,7 +27,8 @@ struct RouteNeighbor{
 class RouteNode{
 public:
 
-	static const Index NOT_FOUND = ~0;
+	static constexpr Index NOT_FOUND = ~0;
+
 
 INSPECTABLE:
 	Identifier m_id;
