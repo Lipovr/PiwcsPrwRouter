@@ -53,6 +53,8 @@ namespace piwcs::prw::router{
 		 * Adds new item _x to the queue and updates length of route to node with index _x.current_i so that it equals _x.routeLength
 		 *
 		 * @param _x item to push to queue
+		 *
+		 * @throws out_of_range exception if `_x.current_i` or `_x.previous_i` is out of range for queue's underlying containers size
 		 */
 		void add(const HeapItem &_x);
 
