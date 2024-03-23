@@ -42,6 +42,8 @@ struct RouteTableItem{
 
 	bool isComputed() const {return exitIdx != NOT_COMPUTED;}
 
+	bool operator==(const RouteTableItem& rhs) const = default;
+
 };
 
 
