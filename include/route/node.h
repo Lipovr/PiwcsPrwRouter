@@ -105,6 +105,23 @@ public:
 	 */
 	Index findNeighbor(Index index) const;
 
+	/**
+	 * Get neighbor list entry by neighbor index
+	 *
+	 * @param exit index of exit for which to get neighbor
+	 *
+	 * @return constant reference to requested neighbor list entry
+	 */
+	const RouteNeighbor& getNeighbor(Index exit) const;
+
+	/**
+	 * Get routing table entry by destination index
+	 *
+	 * @param destination index of destination for which to get table entry
+	 *
+	 * @return constant reference to requested routing table entry
+	 */
+	const RouteTableItem& getTableItem(Index destination) const;
 
 };
 
