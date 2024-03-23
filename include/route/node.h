@@ -36,22 +36,23 @@ INSPECTABLE:
 
 public:
 	RouteNode(const Identifier &id,
+			std::vector<RouteNeighbor> &neighbors,
+			Index table_capacity,
 			bool requiresrouting = true,
 			bool isdestination = false,
-			Index table_capacity = 0,
-			std::vector<RouteNeighbor> &neighbors
 			);
 
 	RouteNode(const Identifier &id,
+			Index table_capacity,
 			bool requiresrouting = true,
 			bool isdestination = false,
-			Index table_capacity = 0,
-			Index neighbor_capacity = 0);
+			Index neighbor_capacity = 0,
+			);
 
 	const Identifier &id() const { return m_id; }
 
 	/**
-	 * Reserve memory for node's routing table to hold
+	 * Resize node's routing table to hold
 	 * all possible destinations (all other nodes in graph)
 	 */
 	void ensureTableCapacity(Index N);
