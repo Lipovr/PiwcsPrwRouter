@@ -4,7 +4,9 @@ if(GTest_FOUND)
 	enable_testing()
 	
 	add_executable(router_tests
-		heap.cpp)
+		heap.cpp
+		node.cpp
+		)
 		
 	target_link_libraries(router_tests piwcsprwmodel)
 	
