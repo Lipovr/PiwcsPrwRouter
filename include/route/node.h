@@ -36,17 +36,17 @@ INSPECTABLE:
 
 public:
 	RouteNode(const Identifier &id,
-			std::vector<RouteNeighbor> &neighbors,
+			std::vector<RouteNeighbor> neighbors,
 			Index table_capacity,
 			bool requiresrouting = true,
-			bool isdestination = false,
+			bool isdestination = false
 			);
 
 	RouteNode(const Identifier &id,
 			Index table_capacity,
 			bool requiresrouting = true,
 			bool isdestination = false,
-			Index neighbor_capacity = 0,
+			Index neighbor_capacity = 0
 			);
 
 	const Identifier &id() const { return m_id; }

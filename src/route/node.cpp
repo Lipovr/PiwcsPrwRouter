@@ -3,25 +3,26 @@
 namespace piwcs::prw::router {
 
 	RouteNode::RouteNode(const Identifier &id,
-			bool requiresrouting = true,
-			bool isdestination = false,
-			Index table_capacity = 0,
-			std::vector<RouteNeighbor> &neighbors
+			std::vector<RouteNeighbor> neighbors,
+			Index table_capacity,
+			bool requiresrouting,
+			bool isdestination
 			):
 		m_id(id),
-		m_isdestination(isdestination),
+		m_neighbors(std::move(neighbors)),
 		m_requiresrouting(requiresrouting),
-		m_neighbors(neighbors)
+		m_isdestination(isdestination)
 	{
 		this->ensureTableCapacity(table_capacity);
 	}
 
 	RouteNode::RouteNode(const Identifier &id,
-			bool requiresrouting = true,
-			bool isdestination = false,
-			Index table_capacity = 0,
-			Index neighbor_capacity = 0):
-		RouteNode(id, requiresrouting, isdestination, table_capacity, std::vector<RouteNeighbor>())
+			Index table_capacity,
+			bool requiresrouting,
+			bool isdestination,
+			Index neighbor_capacity
+			):
+		RouteNode(id, std::vector<RouteNeighbor>(), table_capacity, requiresrouting, isdestination)
 	{
 		this->ensureNeighborCapacity(neighbor_capacity);
 	}
@@ -46,7 +47,7 @@ namespace piwcs::prw::router {
 	}
 
 	void RouteNode::addNeighbor(Index index, Length distance){
-		m_neighbors.push_back(RouteNeighbor{index, distance});
+		m_neighbors.emplace_back(index, distance);
 	}
 
 	Index RouteNode::findNeighbor(Index index) const{
