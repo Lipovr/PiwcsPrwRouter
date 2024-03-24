@@ -84,6 +84,15 @@ INSPECTABLE:
 	 */
 	RouteTables m_getTables();
 
+	/*
+	 * Ready workspace for running routing algorithm on next origin node
+	 *
+	 * Reset m_nodeinheap
+	 * Reset m_nodevisited
+	 * Empty m_heap
+	 */
+	void m_reset();
+
 };
 
 }
