@@ -85,6 +85,11 @@ namespace piwcs::prw::router{
 		 * @return whether underlying queue is empty
 		 */
 		bool empty() const;
+
+		/*
+		 * Empty underlying queue
+		 */
+		void makeEmpty();
 	};
 }
 #endif /* INCLUDE_ROUTE_DISTHEAP_H_ */
