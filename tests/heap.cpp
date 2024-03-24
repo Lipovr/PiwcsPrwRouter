@@ -88,3 +88,15 @@ TEST_F(DistHeapFilledTests, PopSorted){
 
 	EXPECT_EQ(popped, test_popped);
 };
+
+TEST_F(DistHeapFilledTests, NotEmptyMakeEmpty){
+	heap.makeEmpty();
+	EXPECT_TRUE(heap.empty());
+}
+
+TEST(DistHeap, EmptyMakeEmpty){
+	DistHeap heap = DistHeap(10);
+	EXPECT_TRUE(heap.empty());
+	heap.makeEmpty();
+	EXPECT_TRUE(heap.empty());
+}
