@@ -57,6 +57,7 @@ public:
 		};
 
 INSPECTABLE:
+	Index m_nodeCount;
 	std::vector<RouteNode> m_nodes;
 	std::vector<bool> m_nodeinheap;
 	std::vector<NodeStatus> m_nodevisited;
