@@ -66,5 +66,13 @@ RouteTables AlgWorkspace::m_getTables(){
 	return RouteTables();
 }
 
+void AlgWorkspace::m_reset(){
+	m_heap.makeEmpty();
+	for(Index i=0; i<m_nodeCount;){
+		m_nodeinheap[i]=false;
+		m_nodevisited[i]=NodeStatus::NOT_VISITED;
+	}
+}
+
 }
 
