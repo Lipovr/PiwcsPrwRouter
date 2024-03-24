@@ -42,4 +42,10 @@ namespace piwcs::prw::router{
 		return m_heap.empty();
 	}
 
+	void DistHeap::makeEmpty(){
+		for(;!this->empty();){
+			m_heap.pop();
+		}
+	}
+
 }
