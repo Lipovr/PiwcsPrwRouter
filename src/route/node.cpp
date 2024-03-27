@@ -68,4 +68,8 @@ namespace piwcs::prw::router {
 		return m_table[destination];
 	}
 
+	Index RouteNode::neighbourCount() const{
+		return m_neighbors.size();
+	}
+
 }

@@ -127,6 +127,13 @@ public:
 	 */
 	const RouteTableItem& getTableItem(Index destination) const;
 
+	/**
+	 * Get count of this node's neighbors
+	 *
+	 * @return size of neighbor list
+	 */
+	Index neighbourCount() const;
+
 };
 
 }
