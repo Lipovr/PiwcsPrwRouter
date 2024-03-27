@@ -74,8 +74,11 @@ public:
 };
 
 TEST_F(RouteNodeNeighborTests, AddNeighbors){
-
-	ASSERT_EQ(node.m_neighbors, neighbors);
+	std::vector<RouteNeighbor> test_neighbors;
+	for(Index i=0; i<neighbors.size(); ++i){
+		test_neighbors.emplace_back(node.getNeighbor(i));
+	}
+	ASSERT_EQ(test_neighbors, neighbors);
 }
 
 TEST_F(RouteNodeNeighborTests, FindNeighborSucceed){
@@ -84,4 +87,8 @@ TEST_F(RouteNodeNeighborTests, FindNeighborSucceed){
 
 TEST_F(RouteNodeNeighborTests, FindNeighborFail){
 	ASSERT_EQ(node.findNeighbor(8), RouteNode::NOT_FOUND);
+}
+
+TEST_F(RouteNodeNeighborTests, NeighborCount){
+	ASSERT_EQ(node.neighbourCount(), neighbors.size());
 }
