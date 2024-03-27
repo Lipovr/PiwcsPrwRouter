@@ -110,7 +110,7 @@ public:
 	Index findNeighbor(Index index) const;
 
 	/**
-	 * Get neighbor list entry by neighbor index
+	 * Get neighbor list entry by exit index
 	 *
 	 * @param exit index of exit for which to get neighbor
 	 *
