@@ -22,7 +22,7 @@ namespace piwcs::prw::router{
 					_x.previous_i, m_distances.size()
 					));
 		}
-		m_heap.push(HeapItem(_x.routeLength, _x.current_i, _x.previous_i));
+		m_heap.emplace(_x.routeLength, _x.current_i, _x.previous_i);
 		m_distances[_x.current_i] = _x.routeLength;
 	}
 
