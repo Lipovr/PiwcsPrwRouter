@@ -55,9 +55,18 @@ TEST(DistHeap, Pop){
 	ASSERT_TRUE(heap.empty());
 };
 
+TEST(DistHeap, IsInf){
+	Index heap_size = 10;
+	DistHeap heap = DistHeap(heap_size);
+	for(Index i=0; i<heap_size; ++i){
+		ASSERT_EQ(heap.dist(i), consts::INF);
+	}
+}
+
 class DistHeapFilledTests : public testing::Test{
 protected:
-	DistHeap heap= DistHeap(4);
+	Index heap_size = 4;
+	DistHeap heap= DistHeap(heap_size);
 
 	void SetUp() override{
 		// Populate with some initial values
@@ -92,6 +101,12 @@ TEST_F(DistHeapFilledTests, PopSorted){
 TEST_F(DistHeapFilledTests, NotEmptyMakeEmpty){
 	heap.makeEmpty();
 	EXPECT_TRUE(heap.empty());
+	std::vector<Length> lengths;
+	std::vector<Length> lengths_test;
+	for(Index i=0; i<heap_size; ++i){
+		lengths.emplace_back(heap.dist(i));
+		lengths_test.emplace_back(consts::INF);
+	}
 }
 
 TEST(DistHeap, EmptyMakeEmpty){
