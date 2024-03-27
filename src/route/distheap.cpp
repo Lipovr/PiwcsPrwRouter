@@ -7,6 +7,14 @@ namespace piwcs::prw::router{
 
 	DistHeap::DistHeap(Index _capacity){
 		m_distances.resize(_capacity);
+		this->m_markAllInf();
+
+	}
+
+	void DistHeap::m_markAllInf(){
+		for(auto it=m_distances.begin(); it<m_distances.end(); ++it){
+			*it = consts::INF;
+		}
 	}
 
 	void DistHeap::add(const HeapItem &_x){
@@ -46,6 +54,11 @@ namespace piwcs::prw::router{
 		for(;!this->empty();){
 			m_heap.pop();
 		}
+		this->m_markAllInf();
+
 	}
+
+
+
 
 }

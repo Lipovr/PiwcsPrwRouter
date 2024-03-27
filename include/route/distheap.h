@@ -41,6 +41,8 @@ namespace piwcs::prw::router{
 			> m_heap;
 		std::vector<Length> m_distances;
 
+		void m_markAllInf();
+
 	public:
 		/*
 		 * Constructs new DistHeap with given size of underlying containers.
@@ -87,9 +89,13 @@ namespace piwcs::prw::router{
 		bool empty() const;
 
 		/*
+		 * Reset heap to prepare it for another iteration
+		 *
 		 * Empty underlying queue
+		 * Set all route lengths to INF
 		 */
 		void makeEmpty();
+
 	};
 }
 #endif /* INCLUDE_ROUTE_DISTHEAP_H_ */
