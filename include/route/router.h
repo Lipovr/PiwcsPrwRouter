@@ -74,7 +74,7 @@ INSPECTABLE:
 	static std::unique_ptr<AlgWorkspace> m_makeWorkspace(const Model &InModel);
 
 	/*
-	 * For each node in workspace Run Dijekstra algorithm
+	 * For each node in workspace Run Dijkstra algorithm
 	 * and generate routing table
 	 */
 	void m_run();
