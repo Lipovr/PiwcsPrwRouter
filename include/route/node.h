@@ -31,6 +31,7 @@ public:
 
 
 INSPECTABLE:
+	Index m_index;
 	Identifier m_id;
 	std::vector<RouteNeighbor> m_neighbors;
 	std::vector<RouteTableItem> m_table;
@@ -38,21 +39,25 @@ INSPECTABLE:
 	bool m_requiresrouting;
 
 public:
-	RouteNode(const Identifier &id,
+	RouteNode(Index idx,
+			const Identifier &id,
 			std::vector<RouteNeighbor> neighbors,
 			Index table_capacity,
 			bool requiresrouting = true,
 			bool isdestination = false
 			);
 
-	RouteNode(const Identifier &id,
+	RouteNode(Index idx,
+			const Identifier &id,
 			Index table_capacity,
 			bool requiresrouting = true,
 			bool isdestination = false,
 			Index neighbor_capacity = 0
 			);
-
+	//TODO comment
 	const Identifier &id() const { return m_id; }
+	//TODO comment
+	Index idx() const {return m_index; }
 
 	/**
 	 * Resize node's routing table to hold
