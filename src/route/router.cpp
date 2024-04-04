@@ -10,8 +10,8 @@ static std::unique_ptr<AlgWorkspace> AlgWorkspace::d_makeDebugWorkspace(){
 	return std::make_unique<AlgWorkspace>(std::vector<RouteNode>());
 }
 
-Index AlgWorkspace::d_addNode(const Identifier &id, bool isdestination, bool requiresrouting){
-	RouteNode node = RouteNode(id, isdestination, requiresrouting, std::vector<RouteNeighbor>());
+Index AlgWorkspace::d_addNode(const Identifier &id, Index table_capacity, bool requiresrouting, bool isdestination){
+	RouteNode node = RouteNode(id, table_capacity, requiresrouting, isdestination);
 	m_nodes.push_back(node);
 
 	return m_nodes.size() - 1;
