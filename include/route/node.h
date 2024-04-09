@@ -52,6 +52,8 @@ public:
 			Index neighbor_capacity = 0
 			);
 
+	bool operator==(const RouteNode &rhs) const = default;
+
 	const Identifier &id() const { return m_id; }
 
 	/**
