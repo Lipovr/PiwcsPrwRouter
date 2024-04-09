@@ -30,6 +30,15 @@ static RouteTables AlgWorkspace::makeRouteTables(const Model &InModel){
 	return workspaceptr->m_getTables();
 }
 
+AlgWorkspace::AlgWorkspace(const std::vector<RouteNode> &nodes):
+	m_nodes(std::move(nodes)),
+	m_nodeCount(m_nodes.size()),
+	m_nodeinheap(std::vector<bool>(m_nodeCount, false)),
+	m_nodevisited(std::vector<NodeStatus>(m_nodeCount, NodeStatus::NOT_VISITED)),
+	m_heap(DistHeap(m_nodeCount)){
+	this->m_reset();
+}
+
 /*
  * TODO Stub WIP
  */
