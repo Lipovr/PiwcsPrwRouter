@@ -2,48 +2,23 @@
 
 namespace piwcs::prw::router {
 
-	RouteNode::RouteNode(const Identifier &id,
-			std::vector<RouteNeighbor> neighbors,
-			Index table_capacity,
-			bool requiresrouting,
-			bool isdestination
-			):
-		m_id(id),
-		m_neighbors(std::move(neighbors)),
-		m_requiresrouting(requiresrouting),
-		m_isdestination(isdestination)
+	RouteNode::RouteNode(std::vector<RouteNeighbor> neighbors)
+		: m_neighbors(std::move(neighbors))
 	{
-		this->ensureTableCapacity(table_capacity);
 	}
 
-	RouteNode::RouteNode(const Identifier &id,
-			Index table_capacity,
-			bool requiresrouting,
-			bool isdestination,
-			Index neighbor_capacity
-			):
-		RouteNode(id, std::vector<RouteNeighbor>(), table_capacity, requiresrouting, isdestination)
+	RouteNode::RouteNode(Index neighbor_capacity)
+	: RouteNode(std::vector<RouteNeighbor>())
 	{
 		this->ensureNeighborCapacity(neighbor_capacity);
 	}
 
-	void RouteNode::ensureTableCapacity(Index N){
-		m_table.resize(N);
-	}
+	RouteNode::RouteNode()
+	: RouteNode(0)
+	{}
 
 	void RouteNode::ensureNeighborCapacity(Index N){
 		m_neighbors.reserve(N);
-	}
-
-	bool RouteNode::insertTableRecord(Index destination, Index exit, Length distance){
-		if (m_table[destination].isComputed()){
-			return false;
-		}
-		else{
-			m_table[destination].exitIdx = exit;
-			m_table[destination].routeLength = distance;
-			return true;
-		}
 	}
 
 	void RouteNode::addNeighbor(Index index, Length distance){
@@ -62,10 +37,6 @@ namespace piwcs::prw::router {
 
 	const RouteNeighbor& RouteNode::getNeighbor(Index exit) const{
 		return m_neighbors[exit];
-	}
-
-	const RouteTableItem& RouteNode::getTableItem(Index destination) const{
-		return m_table[destination];
 	}
 
 	Index RouteNode::neighbourCount() const{

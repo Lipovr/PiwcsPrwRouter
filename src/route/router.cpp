@@ -1,164 +1,161 @@
 #include<iostream>
-#include<format>
+/* TODO Implement exceptions?
+#include<format>*/
 
 #include "route/router.h"
 
 namespace piwcs::prw::router{
 
-#ifndef NDEBUG
-std::unique_ptr<AlgWorkspace> AlgWorkspace::d_makeDebugWorkspace(){
-	return std::make_unique<AlgWorkspace>(std::vector<RouteNode>());
-}
-
-Index AlgWorkspace::d_addNode(const Identifier &id, Index table_capacity, bool requiresrouting, bool isdestination){
-	RouteNode node = RouteNode(id, table_capacity, requiresrouting, isdestination);
-	m_nodes.push_back(node);
-
-	return m_nodes.size() - 1;
-}
-
-void AlgWorkspace::d_addSection(Index from, Index to, Length distance){
-	m_nodes[from].addNeighbor(to, distance);
-
-}
-
-#endif // NDEBUG
-
-RouteTables AlgWorkspace::makeRouteTables(const Model &InModel){
-	auto workspaceptr = m_makeWorkspace(InModel);
-	workspaceptr->m_run();
-	return workspaceptr->m_getTables();
-}
-
-AlgWorkspace::AlgWorkspace(const std::vector<RouteNode> &nodes):
+Router::Router(const std::vector<RouteNode> &nodes):
 	m_nodes(std::move(nodes)),
 	m_nodeCount(nodes.size()),
-	m_nodeinheap(std::vector<bool>(nodes.size(), false)),
 	m_nodevisited(std::vector<NodeStatus>(nodes.size(), NodeStatus::NOT_VISITED)),
 	m_heap(DistHeap(nodes.size())){
 	this->m_reset();
 }
 
-/*
- * TODO Stub WIP
- */
-std::unique_ptr<AlgWorkspace> AlgWorkspace::m_makeWorkspace(const Model &InModel){
-	return AlgWorkspace::d_makeDebugWorkspace();
-}
 
 /*
  * TODO Stub WIP
  */
-void AlgWorkspace::m_run(){
-	for (Index origin_i = 0; origin_i<m_nodes.size(); origin_i++){
-		if (!m_nodes[origin_i].requiresRouting()){
-			continue;
-		}
-		RouteNode& origin = m_nodes[origin_i];
-		/*
-		 *  Reset workspace variables
-		 */
-		m_reset();
+std::vector<RouteTableItem> Router::run(Index origin_i){
 
-		/*
-		 * Initiate Dijkstra's algorithm by adding origin with
-		 * zero distance to itself
-		 *
-		 * We also assume that previous node of route from origin to itself
-		 * is origin. Therefore additional check is needed to determine if
-		 * we search for this route to add it to routing table as 'SELF'
-		 */
-		m_heap.add(HeapItem(0, origin_i, origin_i));
+	/*
+	 * Initialize vector representing routing table with default RouteTableItem
+	 * for each node.
+	 *
+	 * This sets every node's optimal path length to consts::INF, and it will stay so
+	 * in resulting routing table for nodes that are unreachable from origin
+	 */
+	auto result = std::vector<RouteTableItem>(m_nodeCount, RouteTableItem{});
 
-		for(; !m_heap.empty();){
-			Index current_i = m_heap.top().current_i;
-			Index previous_i = m_heap.top().previous_i;
+	/*
+	 * Bind reference to 'origin' node for convenience
+	 */
+	RouteNode& origin = m_nodes[origin_i];
 
-			RouteNode& current = m_nodes[current_i];
+	/*
+	 * Initiate Dijkstra's algorithm by adding origin with
+	 * zero distance to itself
+	 *
+	 * We also assume that previous node of route from origin to itself
+	 * is origin. Therefore additional check is needed to determine if
+	 * we search for route 'origin->origin' and add it to routing table as 'SELF'
+	 */
+	m_heap.add(HeapItem(0, origin_i, origin_i));
 
-			/************************************************/
-			/* Iterate over current's neighbors             */
-			/************************************************/
-			for(Index exit=0; exit<current.neighbourCount(); ++exit){
-				// Skip neighbor if visited
-				if(NodeStatus::VISITED==
-						m_nodevisited[current.getNeighbor(exit).node_i]){
-					continue;
-				}
+	for(; !m_heap.empty();){
+		Index current_i = m_heap.top().current_i;
+		Index previous_i = m_heap.top().previous_i;
 
-				const RouteNeighbor& neighbor_p = current.getNeighbor(exit);
-				Index neighbor_i = neighbor_p.node_i;
-				const RouteNode& neighbor = m_nodes[neighbor_i];
-				Length dist_curr = m_heap.dist(current_i)+neighbor_p.distance;
+		RouteNode& current = m_nodes[current_i];
 
-				/*
-				 * No need to check if neighbor is in heap
-				 * because in this case its route length will be INF
-				 */
-				if(dist_curr<m_heap.dist(neighbor_i)){
-						m_heap.add(HeapItem(dist_curr, neighbor_i, current_i));
-				}
+		/************************************************/
+		/* Iterate over current's neighbors             */
+		/************************************************/
+		for(Index exit=0; exit<current.neighbourCount(); ++exit){
+			// Skip neighbor if visited
+			if(NodeStatus::VISITED==
+					m_nodevisited[current.getNeighbor(exit).node_i]){
+				continue;
 			}
 
-			/************************************************/
-			/* Modify origin's routing table                */
-			/************************************************/
-			Length distance = consts::INF;
-			Index exit = RouteTableItem::NOT_COMPUTED;
-			if(current_i==origin_i){
-				exit = RouteTableItem::NOT_COMPUTED;
-				distance = consts::SELF;
+			const RouteNeighbor& neighbor_info = current.getNeighbor(exit);
+			Index neighbor_i = neighbor_info.node_i;
+			Length dist_curr = m_heap.dist(current_i)+neighbor_info.distance;
+
+			/*
+			 * No need to check if neighbor is in heap
+			 * because in this case its route length will be INF
+			 */
+			if(dist_curr<m_heap.dist(neighbor_i)){
+					m_heap.add(HeapItem(dist_curr, neighbor_i, current_i));
+			}
+		}
+
+		/************************************************/
+		/* Modify origin's routing table                */
+		/************************************************/
+		Length distance = consts::INF;
+		Index exit = RouteTableItem::NOT_COMPUTED;
+		/*
+		 * Current is origin and this path is marked as path to 'self'
+		 */
+		if(current_i==origin_i){
+			exit = RouteTableItem::NOT_COMPUTED;
+			distance = consts::SELF;
+		}
+		else{
+			/*
+			 * If we got current node from top of the heap
+			 * we can guarantee that its shortest path distance is not consts::INF
+			 * and stored in DistHeap
+			 */
+			distance = m_heap.dist(current_i);
+
+			if(previous_i==origin_i){
+				/*
+				 * Current is neighbor of origin and we need index of origin's exit
+				 * leading to this neighbor
+				 */
+				exit = origin.findNeighbor(current_i);
+				/* TODO Implement exceptions?
+				if(RouteNode::NOT_FOUND==exit){
+					throw std::format(
+							"Neighbor with index '{}' not found at node with index '{}'",
+							current_i, origin_i);
+				}*/
 			}
 			else{
-
-				if(previous_i==origin_i){
-					// Current is neighbor of origin
-					exit = origin.findNeighbor(current_i);
-					if(RouteNode::NOT_FOUND==exit){
-						throw std::format(
-								"Neighbor with index '{}' not found at node with index '{}'",
-								current_i, origin_i);
-					}
-					distance = origin.getNeighbor(exit).distance;
-				}
-				else{
-					/*
-					 *  Current is not neighbor of origin
-					 *  and previous has record in table
-					 *
-					 *  Optimal route to current lies through previous
-					 */
-					const RouteTableItem& previous_rec = origin.getTableItem(previous_i);
-					exit = previous_rec.exitIdx;
-					distance = m_heap.dist(current_i);
-				}
+				/*
+				 *  Current is not neighbor of origin
+				 *  and previous has record in table
+				 *
+				 *  Optimal route to current lies through previous
+				 */
+				const RouteTableItem& previous_rec = result[previous_i];
+				exit = previous_rec.exitIdx;
 			}
-			origin.insertTableRecord(current_i, exit, distance);
-
-			/************************************************/
-			/* Mark current visited                         */
-			/************************************************/
-			m_nodevisited[current_i] = NodeStatus::VISITED;
-
 		}
+		result[current_i] = RouteTableItem{exit, distance};
+
+		/************************************************/
+		/* Mark current visited                         */
+		/************************************************/
+		m_nodevisited[current_i] = NodeStatus::VISITED;
+
+		/************************************************/
+		/* Reset workspace variables                    */
+		/************************************************/
+		m_reset();
 
 	}
+
+	return result;
+} //Router::run
+
+std::vector<std::vector<RouteTableItem>> Router::runAll(){
+
+	/*
+	 * Preallocate resulting vector
+	 */
+	auto result = std::vector<std::vector<RouteTableItem>>(m_nodeCount, std::vector<RouteTableItem>(m_nodeCount));
+
+	/*
+	 * Run algorithm for each node
+	 */
+	for (Index i=0; i<m_nodeCount; ++i){
+		result[i] = run(i);
+	}
+	return result;
 }
 
-/*
- * TODO Stub WIP
- */
-RouteTables AlgWorkspace::m_getTables(){
-	return RouteTables();
-}
-
-void AlgWorkspace::m_reset(){
+void Router::m_reset(){
 	m_heap.makeEmpty();
 	for(Index i=0; i<m_nodeCount;){
-		m_nodeinheap[i]=false;
 		m_nodevisited[i]=NodeStatus::NOT_VISITED;
 	}
 }
 
-}
+} //namespace piwcs::prw::router
 

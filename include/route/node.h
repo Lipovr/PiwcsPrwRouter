@@ -24,6 +24,12 @@ struct RouteNeighbor{
 	bool operator==(const RouteNeighbor& rhs) const = default;
 };
 
+/*
+ * Class for node of regular graph in adjacency list representation
+ *
+ * Holds information on neighbors of this node,
+ * see @ref RouteNeighbor for details
+ */
 class RouteNode{
 public:
 
@@ -31,48 +37,15 @@ public:
 
 
 INSPECTABLE:
-	Identifier m_id;
 	std::vector<RouteNeighbor> m_neighbors;
-	std::vector<RouteTableItem> m_table;
-	bool m_isdestination;
-	bool m_requiresrouting;
-
 public:
-	RouteNode(const Identifier &id,
-			std::vector<RouteNeighbor> neighbors,
-			Index table_capacity,
-			bool requiresrouting = true,
-			bool isdestination = false
-			);
+	RouteNode(std::vector<RouteNeighbor> neighbors);
 
-	RouteNode(const Identifier &id,
-			Index table_capacity,
-			bool requiresrouting = true,
-			bool isdestination = false,
-			Index neighbor_capacity = 0
-			);
+	RouteNode(Index neighbor_capacity);
+
+	RouteNode();
 
 	bool operator==(const RouteNode &rhs) const = default;
-
-	const Identifier &id() const { return m_id; }
-
-	/**
-	 * Resize node's routing table to hold
-	 * all possible destinations (all other nodes in graph)
-	 */
-	void ensureTableCapacity(Index N);
-
-	/**
-	 * Create new record in node's routing table. If record for this
-	 * node already exists do nothing and return false
-	 *
-	 * @param destination index of node for which table record will be created
-	 * @param exit index of this node's exit from which optimal route to `destination` node starts
-	 * @param distance length of optimal route to `destination` node
-	 *
-	 * @return whether new record was created
-	 */
-	bool insertTableRecord(Index destination, Index exit, Length distance);
 
 	/**
 	 * Reserve memory for node's neighbor list to hold
@@ -87,20 +60,6 @@ public:
 	 * @param distance length of connection to neighbor
 	 */
 	void addNeighbor(Index index, Length distance);
-
-	/**
-	 * Checks if node requires routing
-	 *
-	 * @return whether this node requires routing
-	 */
-	bool requiresRouting() const { return m_requiresrouting; }
-
-	/**
-	 * Checks if node is marked as destination
-	 *
-	 * @return whether this node is marked as destination
-	 */
-	bool isDestination() const { return m_isdestination; }
 
 	/**
 	 * Find exit index of neighbor with index `index`
@@ -119,15 +78,6 @@ public:
 	 * @return constant reference to requested neighbor list entry
 	 */
 	const RouteNeighbor& getNeighbor(Index exit) const;
-
-	/**
-	 * Get routing table entry by destination index
-	 *
-	 * @param destination index of destination for which to get table entry
-	 *
-	 * @return constant reference to requested routing table entry
-	 */
-	const RouteTableItem& getTableItem(Index destination) const;
 
 	/**
 	 * Get count of this node's neighbors
