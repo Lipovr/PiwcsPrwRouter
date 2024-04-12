@@ -6,6 +6,7 @@ if(GTest_FOUND)
 	add_executable(router_tests
 		heap.cpp
 		node.cpp
+		router.cpp
 		)
 		
 	target_link_libraries(router_tests piwcsprwmodel)
@@ -15,7 +16,7 @@ if(GTest_FOUND)
 		GTest::gtest_main
 		)
 		
-	target_compile_options(router_tests PUBLIC -g -O0)
+	target_compile_options(router_tests PUBLIC -g3 -O0)
 	include(GoogleTest)
 	gtest_discover_tests(router_tests)
 	
