@@ -6,9 +6,9 @@ namespace piwcs::prw::router{
 
 /**
  * Type alias for route distance and section lengths.
- * Inherited from piwcsprwmodel
+ *
  */
-using Length = piwcs::prw::Section::Length;
+using Length = uint32_t;
 
 /**
  * Type alias for identifiers. Effectively a string.
