@@ -6,7 +6,7 @@
 namespace piwcs::prw::router{
 
 #ifndef NDEBUG
-static std::unique_ptr<AlgWorkspace> AlgWorkspace::d_makeDebugWorkspace(){
+std::unique_ptr<AlgWorkspace> AlgWorkspace::d_makeDebugWorkspace(){
 	return std::make_unique<AlgWorkspace>(std::vector<RouteNode>());
 }
 
@@ -24,7 +24,7 @@ void AlgWorkspace::d_addSection(Index from, Index to, Length distance){
 
 #endif // NDEBUG
 
-static RouteTables AlgWorkspace::makeRouteTables(const Model &InModel){
+RouteTables AlgWorkspace::makeRouteTables(const Model &InModel){
 	auto workspaceptr = m_makeWorkspace(InModel);
 	workspaceptr->m_run();
 	return workspaceptr->m_getTables();
@@ -32,11 +32,18 @@ static RouteTables AlgWorkspace::makeRouteTables(const Model &InModel){
 
 AlgWorkspace::AlgWorkspace(const std::vector<RouteNode> &nodes):
 	m_nodes(std::move(nodes)),
-	m_nodeCount(m_nodes.size()),
-	m_nodeinheap(std::vector<bool>(m_nodeCount, false)),
-	m_nodevisited(std::vector<NodeStatus>(m_nodeCount, NodeStatus::NOT_VISITED)),
-	m_heap(DistHeap(m_nodeCount)){
+	m_nodeCount(nodes.size()),
+	m_nodeinheap(std::vector<bool>(nodes.size(), false)),
+	m_nodevisited(std::vector<NodeStatus>(nodes.size(), NodeStatus::NOT_VISITED)),
+	m_heap(DistHeap(nodes.size())){
 	this->m_reset();
+}
+
+/*
+ * TODO Stub WIP
+ */
+std::unique_ptr<AlgWorkspace> AlgWorkspace::m_makeWorkspace(const Model &InModel){
+	return AlgWorkspace::d_makeDebugWorkspace();
 }
 
 /*
@@ -79,9 +86,9 @@ void AlgWorkspace::m_run(){
 					continue;
 				}
 
-				RouteNeighbor& neighbor_p = current.getNeighbor(exit);
+				const RouteNeighbor& neighbor_p = current.getNeighbor(exit);
 				Index neighbor_i = neighbor_p.node_i;
-				RouteNode& neighbor = m_nodes[neighbor_i];
+				const RouteNode& neighbor = m_nodes[neighbor_i];
 				Length dist_curr = m_heap.dist(current_i)+neighbor_p.distance;
 
 				/*
@@ -121,7 +128,7 @@ void AlgWorkspace::m_run(){
 					 *
 					 *  Optimal route to current lies through previous
 					 */
-					RouteTableItem& previous_rec = origin.getTableItem(previous_i);
+					const RouteTableItem& previous_rec = origin.getTableItem(previous_i);
 					exit = previous_rec.exitIdx;
 					distance = m_heap.dist(current_i);
 				}
