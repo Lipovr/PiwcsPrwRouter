@@ -32,7 +32,7 @@ NodeTable Router::run(Index origin_i){
 	/*
 	 * Bind reference to 'origin' node for convenience
 	 */
-	RouteNode& origin = m_nodes[origin_i];
+	const RouteNode& origin = m_nodes[origin_i];
 
 	/*
 	 * Initiate Dijkstra's algorithm by adding origin with
@@ -48,20 +48,23 @@ NodeTable Router::run(Index origin_i){
 		Index current_i = m_heap.top().current_i;
 		Index previous_i = m_heap.top().previous_i;
 
-		RouteNode& current = m_nodes[current_i];
+		m_heap.pop();
+
+		const RouteNode& current = m_nodes[current_i];
 
 		/************************************************/
 		/* Iterate over current's neighbors             */
 		/************************************************/
 		for(Index exit=0; exit<current.neighbourCount(); ++exit){
+			const RouteNeighbor& neighbor_info = current.getNeighbor(exit);
+			Index neighbor_i = neighbor_info.node_i;
+
 			// Skip neighbor if visited
 			if(NodeStatus::VISITED==
-					m_nodevisited[current.getNeighbor(exit).node_i]){
+					m_nodevisited[neighbor_i]){
 				continue;
 			}
 
-			const RouteNeighbor& neighbor_info = current.getNeighbor(exit);
-			Index neighbor_i = neighbor_info.node_i;
 			Length dist_curr = m_heap.dist(current_i)+neighbor_info.distance;
 
 			/*
@@ -116,7 +119,7 @@ NodeTable Router::run(Index origin_i){
 				const RouteTableItem& previous_rec = result[previous_i];
 				exit = previous_rec.exitIdx;
 			}
-		}
+		} // not self
 		result[current_i] = RouteTableItem{exit, distance};
 
 		/************************************************/
@@ -124,12 +127,13 @@ NodeTable Router::run(Index origin_i){
 		/************************************************/
 		m_nodevisited[current_i] = NodeStatus::VISITED;
 
-		/************************************************/
-		/* Reset workspace variables                    */
-		/************************************************/
-		m_reset();
 
-	}
+	} // heap loop
+
+	/************************************************/
+	/* Reset workspace variables                    */
+	/************************************************/
+	m_reset();
 
 	return result;
 } //Router::run
@@ -152,7 +156,7 @@ std::vector<NodeTable> Router::runAll(){
 
 void Router::m_reset(){
 	m_heap.makeEmpty();
-	for(Index i=0; i<m_nodeCount;){
+	for(Index i=0; i<m_nodeCount; ++i){
 		m_nodevisited[i]=NodeStatus::NOT_VISITED;
 	}
 }
