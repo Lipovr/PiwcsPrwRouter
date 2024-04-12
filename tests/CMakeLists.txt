@@ -6,7 +6,6 @@ if(GTest_FOUND)
 	add_executable(router_tests
 		heap.cpp
 		node.cpp
-		algWorkspace.cpp
 		)
 		
 	target_link_libraries(router_tests piwcsprwmodel)

@@ -9,13 +9,9 @@ Identifier id_1 = "this_is_id_1";
 
 
 TEST(RouteNode, DefaultConstruct){
-	RouteNode node = RouteNode(id_0, 10);
-	ASSERT_EQ(node.m_id, id_0);
+	RouteNode node = RouteNode();
 	ASSERT_GE(node.m_neighbors.capacity(), 0);
 	ASSERT_EQ(node.m_neighbors.size(), 0);
-	ASSERT_EQ(node.m_table.size(), 10);
-	ASSERT_FALSE(node.m_isdestination);
-	ASSERT_TRUE(node.m_requiresrouting);
 }
 
 TEST(RouteNode, NeighborsDefaultConstruct){
@@ -24,34 +20,19 @@ TEST(RouteNode, NeighborsDefaultConstruct){
 	neighbors.emplace_back(7, 8);
 	neighbors.emplace_back(5, 80);
 
-	RouteNode node = RouteNode(id_0, neighbors, 10);
+	RouteNode node = RouteNode(neighbors);
 
 	ASSERT_EQ(node.m_neighbors, neighbors);
 }
 
 TEST(RouteNode, AllocConstruct){
-	RouteNode node = RouteNode(id_0, 10, false, true, 20);
-	EXPECT_FALSE(node.m_requiresrouting);
-	EXPECT_TRUE(node.m_isdestination);
+	RouteNode node = RouteNode(20);
 	EXPECT_GE(node.m_neighbors.capacity(), 20);
-}
-
-TEST(RouteNode, InsertTableRecordSucceed){
-	RouteNode node = RouteNode(id_0, 10);
-	ASSERT_TRUE(node.insertTableRecord(2, 0, 5));
-
-	ASSERT_EQ(node.m_table[2], RouteTableItem(0,5));
-}
-
-TEST(RouteNode, InsertTableRecordFail){
-	RouteNode node = RouteNode(id_0, 10);
-	node.insertTableRecord(2, 0, 5);
-	ASSERT_FALSE(node.insertTableRecord(2, 1, 6));
-	ASSERT_EQ(node.m_table[2], RouteTableItem(0,5));
+	EXPECT_EQ(node.m_neighbors.size(), 0);
 }
 
 TEST(RouteNode, AddNeighbor){
-	RouteNode node = RouteNode(id_1, 10);
+	RouteNode node = RouteNode(10);
 	node.addNeighbor(4,23);
 	std::vector<RouteNeighbor> neighbors;
 	neighbors.emplace_back(4,23);
@@ -61,7 +42,7 @@ TEST(RouteNode, AddNeighbor){
 
 class RouteNodeNeighborTests: public testing::Test{
 public:
-	RouteNode node = RouteNode(id_1, 10);
+	RouteNode node = RouteNode(10);
 	std::vector<RouteNeighbor> neighbors;
 	void SetUp() override{
 		neighbors.emplace_back(3, 12);
