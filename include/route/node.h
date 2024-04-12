@@ -12,7 +12,7 @@ namespace piwcs::prw::router{
  * in adjacency list representation.
  *
  * @note A node 'B' is considered a neighbor to another node 'A' if they are
- * connected with a section and 'B' be reached from 'A'.
+ * connected with a section and 'B' can be reached from 'A'.
  * Thus if 'A' is connected to 'B' with unidirectional
  * section 'A'->'B' 'B' is a neighbor of 'A', but 'A' is not a neighbor of 'B'
  * since it can't be reached.
