@@ -49,8 +49,11 @@ struct RouteTableItem{
 
 	bool operator==(const RouteTableItem& rhs) const = default;
 
+	friend std::ostream& operator<<(std::ostream& os, const RouteTableItem& item);
+
 };
 
+std::ostream& operator<<(std::ostream& os, const RouteTableItem& item);
 
 
 }
