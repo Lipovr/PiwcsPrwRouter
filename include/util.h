@@ -34,6 +34,11 @@ namespace piwcs::prw::router::consts{
 
 namespace piwcs::prw::router{
 
+/*
+ * Structure for routing table entry for a node where
+ * 'exitIdx' is index of exit leading to next hop in shortest path to this node
+ * 'routeLength' length of shortest path to this node
+ */
 struct RouteTableItem{
 	static constexpr Index NOT_COMPUTED = ~0;
 
