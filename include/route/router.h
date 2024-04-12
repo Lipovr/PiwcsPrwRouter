@@ -57,6 +57,15 @@ public:
 	 */
 	std::vector<std::vector<RouteTableItem>> runAll();
 
+	/*
+	 * Access internal graph representation
+	 *
+	 * The returned reference is valid as long as this Router object exists
+	 *
+	 * @return regular graph in adjacency list representation
+	 */
+	const Graph& nodes() const { return m_nodes; }
+
 INSPECTABLE:
 	const Index m_nodeCount;
 	const Graph m_nodes;
