@@ -6,7 +6,7 @@
 
 namespace piwcs::prw::router{
 
-Router::Router(const std::vector<RouteNode> &nodes):
+Router::Router(const Graph &nodes):
 	m_nodes(std::move(nodes)),
 	m_nodeCount(nodes.size()),
 	m_nodevisited(std::vector<NodeStatus>(nodes.size(), NodeStatus::NOT_VISITED)),

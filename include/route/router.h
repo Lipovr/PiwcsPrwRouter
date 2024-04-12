@@ -15,6 +15,13 @@
 
 namespace piwcs::prw::router{
 
+/*
+ * A regular graph in adjacency list representation
+ * Basically vector of nodes each containing list
+ * of reachable neighbors, see @ref RouteNode
+ */
+using Graph = std::vector<RouteNode>;
+
 /**
  * Class containing adjacency list representation of regular graph
  * representation of Model and performing routing table generation
@@ -28,7 +35,7 @@ public:
 			VISITED,
 		};
 
-	Router(const std::vector<RouteNode> &nodes);
+	Router(const Graph &nodes);
 	/*
 	 * For specified node in workspace generate routing table
 	 *
@@ -51,8 +58,8 @@ public:
 	std::vector<std::vector<RouteTableItem>> runAll();
 
 INSPECTABLE:
-	Index m_nodeCount;
-	std::vector<RouteNode> m_nodes;
+	const Index m_nodeCount;
+	const Graph m_nodes;
 	std::vector<NodeStatus> m_nodevisited;
 	DistHeap m_heap;
 
