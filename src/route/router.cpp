@@ -18,7 +18,7 @@ Router::Router(const Graph &nodes):
 /*
  * TODO Stub WIP
  */
-std::vector<RouteTableItem> Router::run(Index origin_i){
+NodeTable Router::run(Index origin_i){
 
 	/*
 	 * Initialize vector representing routing table with default RouteTableItem
@@ -27,7 +27,7 @@ std::vector<RouteTableItem> Router::run(Index origin_i){
 	 * This sets every node's optimal path length to consts::INF, and it will stay so
 	 * in resulting routing table for nodes that are unreachable from origin
 	 */
-	auto result = std::vector<RouteTableItem>(m_nodeCount, RouteTableItem{});
+	auto result = NodeTable(m_nodeCount, RouteTableItem{});
 
 	/*
 	 * Bind reference to 'origin' node for convenience
@@ -134,12 +134,12 @@ std::vector<RouteTableItem> Router::run(Index origin_i){
 	return result;
 } //Router::run
 
-std::vector<std::vector<RouteTableItem>> Router::runAll(){
+std::vector<NodeTable> Router::runAll(){
 
 	/*
 	 * Preallocate resulting vector
 	 */
-	auto result = std::vector<std::vector<RouteTableItem>>(m_nodeCount, std::vector<RouteTableItem>(m_nodeCount));
+	auto result = std::vector<NodeTable>(m_nodeCount, NodeTable(m_nodeCount));
 
 	/*
 	 * Run algorithm for each node

@@ -22,6 +22,13 @@ namespace piwcs::prw::router{
  */
 using Graph = std::vector<RouteNode>;
 
+/*
+ * A routing table for a node in @ref Graph
+ * Basically vector of route table entries for every other node in graph.
+ * See @ref RouteTableItem
+ */
+using NodeTable = std::vector<RouteTableItem>;
+
 /**
  * Class containing adjacency list representation of regular graph
  * representation of Model and performing routing table generation
@@ -45,7 +52,7 @@ public:
 	 *
 	 * @return vector representing routing table for specified node with RouteTableItem for every node in graph at corresponding index
 	 */
-	std::vector<RouteTableItem> run(Index origin_i);
+	NodeTable run(Index origin_i);
 
 	/*
 	 * For every node in workspace generate routing table
@@ -55,7 +62,7 @@ public:
 	 * @return vector with vectors representing routing table for each node at corresponding index.
 	 * This vector holds RouteTableItem for every node in graph at node's index
 	 */
-	std::vector<std::vector<RouteTableItem>> runAll();
+	std::vector<NodeTable> runAll();
 
 	/*
 	 * Access internal graph representation
