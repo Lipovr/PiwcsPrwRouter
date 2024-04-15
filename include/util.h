@@ -1,7 +1,12 @@
 #ifndef INCLUDE_UTIL_H_
 #define INCLUDE_UTIL_H_
 
+#include<vector>
+
 #include<piwcsprwmodel.h>
+
+#include "fwd.h"
+
 namespace piwcs::prw::router{
 
 /**
@@ -15,11 +20,27 @@ using Length = uint32_t;
  * Inherited from piwcsprwmodel
  */
 using Identifier = piwcs::prw::Identifier;
+
 /**
  * Type alias for indexes.
  */
 using Index = size_t;
-}
+
+/*
+ * A regular graph in adjacency list representation
+ * Basically vector of nodes each containing list
+ * of reachable neighbors, see @ref RouteNode
+ */
+using Graph = std::vector<RouteNode>;
+
+/*
+ * A routing table for a node in @ref Graph
+ * Basically vector of route table entries for every other node in graph.
+ * See @ref RouteTableItem
+ */
+using NodeTable = std::vector<RouteTableItem>;
+
+} // namespace piwcs::prw::router
 
 namespace piwcs::prw::router::consts{
 	/**

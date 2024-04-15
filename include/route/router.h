@@ -7,27 +7,14 @@
 #include<piwcsprwmodel.h> //#TODO Unnecessary?
 
 #include "common.h"
+#include "fwd.h"
 #include "util.h"
-#include "routetables.h"
+
 #include "route/distheap.h"
 #include "route/node.h"
 
 
 namespace piwcs::prw::router{
-
-/*
- * A regular graph in adjacency list representation
- * Basically vector of nodes each containing list
- * of reachable neighbors, see @ref RouteNode
- */
-using Graph = std::vector<RouteNode>;
-
-/*
- * A routing table for a node in @ref Graph
- * Basically vector of route table entries for every other node in graph.
- * See @ref RouteTableItem
- */
-using NodeTable = std::vector<RouteTableItem>;
 
 /**
  * Class containing adjacency list representation of regular graph

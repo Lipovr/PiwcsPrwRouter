@@ -6,10 +6,10 @@ namespace piwcs::prw::router{
 	struct RouteTableItem;
 
 	class RouteTables;
-	class AlgWorkspace;
+	class Router;
 	class RouteNode;
 	class HeapItem;
-	class RouteDistHeap;
+	class DistHeap;
 
 }
 

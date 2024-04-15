@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "common.h"
+#include "fwd.h"
 #include "util.h"
 
 namespace piwcs::prw::router{
