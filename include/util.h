@@ -40,6 +40,15 @@ using Graph = std::vector<RouteNode>;
  */
 using NodeTable = std::vector<RouteTableItem>;
 
+struct GraphMetaItem{
+	Identifier idmap;
+	bool routeable;
+	bool destination;
+
+}; // struct GraphMetaItem
+
+using GraphMetadata = std::vector<GraphMetaItem>;
+
 } // namespace piwcs::prw::router
 
 namespace piwcs::prw::router::consts{
