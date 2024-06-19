@@ -2,7 +2,6 @@
 #define INCLUDE_ROUTE_MODELPARSER_H_
 
 #include<map>
-#include<exception>
 
 #include "common.h"
 #include "fwd.h"
@@ -16,20 +15,6 @@ struct ParseResult{
 	const GraphMetadata meta;
 
 }; // struct ParseResult
-
-class NotFoundException: public std::runtime_error{
-public:
-	NotFoundException(const std::string& _msg): std::runtime_error(_msg) {}
-};
-
-class SectionNotFoundException : public NotFoundException{
-	SectionNotFoundException(const std::string& _msg): NotFoundException(_msg) {}
-};
-
-class NodeNotFoundException : public NotFoundException{
-	NodeNotFoundException(const std::string& _msg): NotFoundException(_msg) {}
-};
-
 
 class ModelParser{
 public:
