@@ -1,6 +1,12 @@
 #ifndef INCLUDE_UTIL_H_
 #define INCLUDE_UTIL_H_
 
+#ifdef NDEBUG
+#define INSPECTABLE private
+#else
+#define INSPECTABLE public
+#endif
+
 #include<vector>
 
 #include<piwcsprwmodel.h>

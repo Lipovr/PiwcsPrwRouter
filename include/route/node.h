@@ -2,7 +2,6 @@
 #define INCLUDE_ROUTE_NODE_H_
 #include <vector>
 
-#include "common.h"
 #include "fwd.h"
 #include "util.h"
 

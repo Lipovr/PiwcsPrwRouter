@@ -3,7 +3,6 @@
 
 #include<queue>
 
-#include "common.h"
 #include "fwd.h"
 #include "util.h"
 

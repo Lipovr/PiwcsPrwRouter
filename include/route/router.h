@@ -6,7 +6,6 @@
 
 #include<piwcsprwmodel.h> //#TODO Unnecessary?
 
-#include "common.h"
 #include "fwd.h"
 #include "util.h"
 
