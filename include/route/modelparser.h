@@ -23,9 +23,19 @@ public:
 	using ParseMap = IdMap<std::vector<Index>>;
 	static constexpr Index INDEX_INVALID = ~0;
 
-	struct RegNodeInfo{
-		std::vector<Identifier> sections;
-		std::vector<SlotId> slots;
+	struct ModelSectionMapping{
+	    Identifier id;
+	    SlotId slot;
+	};
+
+	struct RegNodeMeta{
+	    bool requires_routing=false;
+	};
+
+	struct RegularNodeInfo{
+	    std::vector<ModelSectionMapping> mappings;
+	    std::vector<SlotId> slots;
+	    RegNodeMeta meta;
 	};
 
 	/*
@@ -42,9 +52,9 @@ INSPECTABLE:
 	ModelRef m_model;
 	ParseMap m_pmap;
 
-	std::vector<RegNodeInfo> getNodeInfo(const Identifier& _id);
+	std::vector<RegularNodeInfo> getNodeInfo(IdRef _id);
 
-	const Node* resolveSection(const Identifier& _section_id, const Identifier& _from_id);
+	const Node* resolveSection(IdRef _section_id, IdRef _from_id);
 
 
 }; // class ModelParser

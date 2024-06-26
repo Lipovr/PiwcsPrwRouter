@@ -19,7 +19,7 @@ namespace piwcs::prw::router{
 		}
 	}
 
-	const Node* ModelParser::resolveSection(const Identifier& _section_id, const Identifier& _from_id){
+	const Node* ModelParser::resolveSection(IdRef _section_id, IdRef _from_id){
 		const Node* start = m_model.node(_from_id);
 		const Section* section = m_model.section(_section_id);
 
