@@ -29,14 +29,15 @@ public:
 	};
 
 	struct RegNodeMeta{
-	    bool requires_routing=false;
-	};
+        bool requires_routing = false;
+        Identifier id_model = ID_NULL;
+    };
 
-	struct RegularNodeInfo{
-	    std::vector<ModelSectionMapping> mappings;
-	    std::vector<SlotId> slots;
-	    RegNodeMeta meta;
-	};
+    struct RegularNodeInfo{
+        std::vector<Identifier> sections;
+        std::vector<SlotId> slots;
+        RegNodeMeta meta;
+    };
 
 	/*
 	 * Construct new ModelParser
