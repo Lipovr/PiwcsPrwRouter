@@ -9,10 +9,41 @@ ModelParser::ModelParser(ModelRef _model)
     : m_model(_model), m_pmap(ParseMap()) {}
 
 ParseResult ModelParser::parse() const {
+    // TODO: Preallocation
+    ParseResult result;
+    std::vector<std::vector<Identifier>> section_table;
     ParseMap pmap;
     for (auto &[id, node] : m_model.nodes()) {
         bool ins_result = pmap.insert(
             {id, std::vector<Index>(node.sectionCount(), INDEX_INVALID)});
+        _ASSERT(
+                ins_result,
+                std::format("ParseMap insert failed with key: \"%s\"", id));
+
+        /*
+         * Get information on regular nodes from this model node
+         */
+        std::vector<RegularNodeInfo> rnodes = getNodeInfo(id);
+
+        for (Index i=0; i<rnodes.size(); i++){
+            /*
+             * Set slots leading to this regular node
+             */
+            for (auto slot: rnodes[i].slots){
+                // This node's index is that of after-the-last element of graph
+                pmap[id][slot] = result.graph.size();
+            }
+
+            /*
+             * Add this regular node to graph
+             */
+            result.graph.push_back(RouteNode(rnodes[i].sections.size()));
+
+            /*
+             * Pass section info to linking loop via section_table
+             */
+            section_table.push_back(std::move(rnodes[i].sections));
+        }
     }
 }
 
